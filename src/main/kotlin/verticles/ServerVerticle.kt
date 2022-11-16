@@ -16,6 +16,17 @@ class ServerVerticle : CoroutineVerticle() {
         val router = Router.router(vertx)
 
         router.get("/status").handler { it.okStatusResponse() }
+        router.route("/cats/*").subRouter(catsRouter())
+
+        return router
+    }
+
+    private fun catsRouter(): Router {
+        val router = Router.router(vertx)
+
+        router.delete("/:id").handler {  println(" delete ${it.request().getParam("id")}")}
+        router.get("/:id").handler { println(" get ${it.request().getParam("id")} ") }
+        router.put("/:id").handler { println(" put ${it.request().getParam("id")}") }
 
         return router
     }
